@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_login"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="120dp"
+        android:src="@drawable/login_img"
+        />
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:background="@drawable/custom_edittext"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        >
+    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:padding="24dp"
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/info"
+                    android:visibility="visible">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Inicio de Sesión"
+                        android:textColor="@color/azulOscruo"
+                        android:textStyle="bold"
+                        android:textSize="35sp"
+                        android:textAlignment="center"
+                        />
+
+                    <EditText
+                        android:id="@+id/campo_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/custom_edittext"
+                        android:drawableLeft="@drawable/icon_person"
+                        android:drawablePadding="8dp"
+                        android:drawableTint="@color/azulOscruo"
+                        android:hint="Usuario"
+                        android:ems="10"
+
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/cardview_dark_background"
+                        />
+
+                    <EditText
+                        android:id="@+id/campo_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:padding="5dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom_edittext"
+                        android:drawableLeft="@drawable/icn_lock"
+                        android:drawablePadding="8dp"
+                        android:drawableTint="@color/azulOscruo"
+                        android:hint="Contraseña"
+
+                        android:ems="10"
+                        android:inputType="textPassword"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/cardview_dark_background"
+                        />
+
+                    <Button
+                        android:id="@+id/btn_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:text="Iniciar Sesión"
+                        android:backgroundTint="@color/azulOscruo"
+                        android:textSize="20sp"
+                        app:cornerRadius="20dp"
+                        />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Cargandi"
+                    android:layout_width="match_parent"
+                    android:layout_height="242dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    android:layout_marginTop="20dp">
+
+                    <ImageView
+                        android:id="@+id/loading_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/pantalla_carga" />
+                </LinearLayout>
+
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

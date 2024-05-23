@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single"
+        >
+
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/icon_person"
+            android:title="Inicio"
+            />
+
+        <item
+            android:id="@+id/nav_info_parqueadero"
+            android:icon="@drawable/icon_info"
+            android:title="Info Parqueadero"
+            />
+
+        <item
+            android:id="@+id/nav_entrada"
+            android:icon="@drawable/icon_open"
+            android:title="Entrada"
+            />
+
+        <item
+            android:id="@+id/nav_salida"
+            android:icon="@drawable/icon_13"
+            android:title="Salida"
+            />
+
+        <item
+            android:id="@+id/nav_buscar_vehiculo"
+            android:icon="@drawable/icon_sea"
+            android:title="Buscar vehiculo"
+            />
+
+        <item
+            android:id="@+id/nav_vehiculos_pend"
+            android:icon="@drawable/icon_06"
+            android:title="Vehiculos ingreso ACT"
+            />
+
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/icon_close"
+            android:title="Cerrar sesion"
+            />
+
+    </group>
+</menu>

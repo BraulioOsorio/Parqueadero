@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/azulOscruo"
+    android:paddingHorizontal="20dp"
+
+    tools:context=".BuscarVehiculoVend">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:background="@drawable/custom_edittext"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <EditText
+                    android:id="@+id/campo_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:padding="10dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawableRight="@drawable/icn_cancel_24"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/azulOscruo"
+                    android:hint="Buscar"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/cardview_dark_background"
+                    />
+
+                <ImageView
+                    android:onClick="buscarVehiculo"
+                    android:id="@+id/img_buscar"
+                    android:layout_width="30dp"
+                    android:layout_height="25dp"
+                    android:layout_marginVertical="1dp"
+                    android:src="@drawable/icon_14"
+                    android:layout_gravity="center"
+                    />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lista de vehículos"
+                android:layout_gravity="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                />
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="@color/azulOscruo"
+                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_gravity="center"/>
+
+           <TextView
+               android:id="@+id/etq_notificacion"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:textSize="22sp"
+               android:gravity="center"
+               android:textStyle="bold"
+               android:textColor="@color/amarilloMostaza"
+               android:layout_marginVertical="10dp"
+               android:layout_marginHorizontal="10dp"
+               />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:id="@+id/Datos"
+                    >
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerVehiculos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="15dp"
+                        >
+                    </androidx.recyclerview.widget.RecyclerView>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Cargandi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    >
+                    <ImageView
+                        android:id="@+id/loading_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:src="@drawable/pantalla_carga"
+                        />
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

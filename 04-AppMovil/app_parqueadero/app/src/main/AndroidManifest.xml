@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_parqueadero_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_parqueadero"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.App_parqueadero"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".AsignarParqueadero"
+            android:exported="false" />
+        <activity
+            android:name=".CardsParqueaderos"
+            android:exported="false" />
+        <activity
+            android:name=".EditarParqueadero"
+            android:exported="false" />
+        <activity
+            android:name=".InicioActivityVend"
+            android:exported="false" />
+        <activity
+            android:name=".VehiculosPendientes"
+            android:exported="false" />
+        <activity
+            android:name=".CrearVendedor"
+            android:exported="false" />
+        <activity
+            android:name=".BuscarVehiculoVend"
+            android:exported="false" />
+        <activity
+            android:name=".CrearParqueadero"
+            android:exported="false" />
+        <activity
+            android:name=".TicketEntrada"
+            android:exported="false" />
+        <activity
+            android:name=".TicketSalida"
+            android:exported="false" />
+        <activity
+            android:name=".DrawerVendedor"
+            android:exported="false" />
+        <activity
+            android:name=".DetalleParqueadero"
+            android:exported="false" />
+        <activity
+            android:name=".DrawerBaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InicioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
+            android:name=".Buscarticket"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

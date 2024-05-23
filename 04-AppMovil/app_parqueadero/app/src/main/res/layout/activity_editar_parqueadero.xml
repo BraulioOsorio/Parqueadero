@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/azulOscruo"
+    tools:context=".EditarParqueadero">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="530dp"
+            android:layout_margin="30dp"
+            android:layout_gravity="center"
+            android:background="@drawable/custom_edittext"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="20dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="visible"
+                    android:id="@+id/info"
+                    android:padding="24dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Editar Parqueadero"
+                        android:textColor="@color/azulOscruo"
+                        android:textStyle="bold"
+                        android:textSize="35sp"
+                        android:textAlignment="center"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <EditText
+                            android:id="@+id/update_buscar"
+                            android:layout_width="160dp"
+                            android:layout_height="50dp"
+                            android:padding="10dp"
+                            android:layout_marginVertical="20dp"
+                            android:background="@drawable/custom_edittext"
+                            android:drawablePadding="10dp"
+                            android:drawableTint="@color/azulOscruo"
+                            android:hint="Buscar"
+                            android:ems="10"
+                            android:inputType="text"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/cardview_dark_background"
+                            />
+
+                        <ImageView
+                            android:onClick="buscarParqueaderoUpdate"
+                            android:id="@+id/img_buscar_update"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="12sp"
+                            android:layout_marginVertical="20dp"
+                            android:src="@drawable/icon_14"
+                            android:layout_gravity="end|center"
+                            />
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/update_nombre_parqueadero"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:padding="5dp"
+                        android:layout_marginTop="40dp"
+                        android:background="@drawable/custom_edittext"
+                        android:drawablePadding="8dp"
+                        android:drawableTint="@color/azulOscruo"
+                        android:hint="Nombre del parqueadero"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/cardview_dark_background"
+                        />
+
+                    <EditText
+                        android:id="@+id/update_direccion_parqueadero"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:padding="5dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/custom_edittext"
+                        android:paddingLeft="30dp"
+                        android:drawablePadding="8dp"
+                        android:drawableTint="@color/azulOscruo"
+                        android:hint="Direccion"
+
+                        android:ems="10"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/cardview_dark_background"
+                        />
+
+                    <TextView
+                        android:id="@+id/etq_idP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:visibility="invisible"
+                        />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15sp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado: "
+                            android:textStyle="bold"
+                            android:textSize="22sp"
+                            />
+
+                        <TextView
+                            android:id="@+id/etq_estado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Estado"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        >
+
+
+                        <Button
+                            android:id="@+id/btn_estado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:backgroundTint="@color/azulOscruo"
+                            android:textSize="20sp"
+                            android:text="Estado"
+                            >
+                        </Button>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_update_parqueadero"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="30dp"
+                        android:text="Editar"
+                        android:backgroundTint="@color/azulOscruo"
+                        android:textSize="25sp"
+                        android:onClick="updateParking"
+                        app:cornerRadius="20dp"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Cargandi"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="invisible"
+                    android:gravity="center"
+                    >
+                    <ImageView
+                        android:id="@+id/loading_screen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:src="@drawable/pantalla_carga"
+                        />
+                </LinearLayout>
+
+
+
+            </FrameLayout>
+
+
+
+
+
+
+        </androidx.cardview.widget.CardView>
+    </ScrollView>
+
+</LinearLayout>

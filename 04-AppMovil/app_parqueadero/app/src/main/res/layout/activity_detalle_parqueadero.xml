@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/azulOscruo"
+    android:paddingHorizontal="20dp"
+    android:gravity="center"
+    tools:context=".DetalleParqueadero">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="20dp"
+        android:background="@drawable/custom_edittext"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="20dp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Información Básica"
+                android:layout_gravity="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="3dp"
+                android:background="@color/azulOscruo"
+                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_edittext"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="20dp"
+
+        >
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:id="@+id/info"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:layout_marginTop="10dp"
+                    >
+                    <ImageView
+                        android:layout_width="120dp"
+                        android:layout_height="130dp"
+                        android:src="@drawable/icon_08"
+                        android:layout_marginLeft="8dp"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="15dp"
+                        >
+                        <TextView
+                            android:id="@+id/etq_nombre_parqueadero"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxx"
+                            android:textSize="23sp"
+                            android:layout_marginTop="10dp"
+                            android:textStyle="bold"
+                            />
+
+
+                        <TextView
+                            android:id="@+id/etq_direccion_parqueadero"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="xxxxxxxxxxx"
+                            android:textSize="23sp"
+                            android:layout_marginTop="30dp"
+                            android:textStyle="bold"
+                            />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tarifas actuales"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="20dp"
+                    />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="3dp"
+                    android:background="@color/azulOscruo"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="50dp"/>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="• Carro  ➞ "
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/etq_precio_carro"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.000"
+                                android:textSize="20sp"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="• Moto  ➞ "
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/etq_precio_moto"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.000"
+                                android:textSize="20sp"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="• Camioneta  ➞ "
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/etq_precio_camioneta"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.000"
+                                android:textSize="20sp"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:layout_marginBottom="20dp"
+                            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="• Camión  ➞ "
+                                android:textStyle="bold"
+                                android:textSize="20sp"
+                                />
+
+                            <TextView
+                                android:id="@+id/etq_precio_camion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.000"
+                                android:textSize="20sp"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </ScrollView>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/Cargandi"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/loading_screen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:src="@drawable/pantalla_carga"
+                    />
+            </LinearLayout>
+
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

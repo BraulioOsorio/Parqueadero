@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group
+    android:checkableBehavior="single"
+    >
+
+    <item
+        android:id="@+id/nav_inicio_admin"
+        android:icon="@drawable/icon_person"
+        android:title="Inicio"
+        />
+
+    <item
+        android:id="@+id/nav_crear_parqueadero"
+        android:icon="@drawable/icon_par"
+        android:title="Crear Parqueadero"
+        />
+
+    <item
+        android:id="@+id/nav_editar_parqueadero"
+        android:icon="@drawable/icon_edit"
+        android:title="Editar Parqueadero"
+        />
+
+    <item
+        android:id="@+id/nav_crear_vendedor"
+        android:icon="@drawable/icon_mas"
+        android:title="Crear Vendedor"
+        />
+
+
+    <item
+        android:id="@+id/nav_asignar_parqueadero"
+        android:icon="@drawable/icon_add"
+        android:title="Asignar Parqueadero"
+        />
+
+    <item
+        android:id="@+id/cerrar_sesion"
+        android:icon="@drawable/icon_close"
+        android:title="Cerrar sesion"
+        />
+
+</group>
+</menu>

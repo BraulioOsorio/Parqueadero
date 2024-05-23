@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TicketEntrada"
+    android:background="@color/azulOscruo"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        android:background="@drawable/custom_edittext"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginTop="25dp"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="TICKET ENTRADA"
+                    android:textSize="35sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/azulOscruo"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp">
+                <EditText
+                    android:id="@+id/campo_buscar_placa"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:padding="5dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/azulOscruo"
+                    android:hint="Placa del Vehiculo"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/cardview_dark_background"
+                    />
+
+                <ImageView
+                    android:id="@+id/btn_buscar"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="47dp"
+                    android:layout_marginRight="25dp"
+                    android:clickable="true"
+                    android:onClick="buscarCarro"
+                    android:layout_gravity="right"
+                    app:fabCustomSize="30dp"
+                    app:srcCompat="@drawable/icon_14"
+                    />
+
+
+            </FrameLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/factura_pendiente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible">
+                        <TextView
+                            android:layout_marginTop="150dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="El vehículo tiene una Factura pendiente"
+                            android:textSize="25sp"
+                            android:textColor="@color/redd"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/bien"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="50dp"
+                        android:visibility="invisible">
+
+                        <ImageView
+
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            app:fabCustomSize="30dp"
+                            app:srcCompat="@drawable/parqueadero_logo"
+
+                            />
+                        <TextView
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Vehículo encontrado"
+                            android:textSize="25sp"
+                            android:textColor="@color/greenn"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/tipo_transporte"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/propietario"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/placa"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="90dp">
+                            <Button
+                                android:id="@+id/insertar"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left"
+                                app:backgroundTint="@color/greenn"
+                                android:text="CONFIRMAR"/>
+
+                            <Button
+                                android:id="@+id/cancelar"
+                                android:layout_marginLeft="30dp"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                app:backgroundTint="@color/redd"
+                                android:text="CANCELAR"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/loultimo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="50dp"
+                        android:visibility="invisible">
+
+                        <ImageView
+
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            app:fabCustomSize="30dp"
+                            app:srcCompat="@drawable/parqueadero_logo"
+
+                            />
+                        <TextView
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="TICKET INGRESO"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/hora"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/propietario2"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/placa2"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+                        <TextView
+                            android:id="@+id/tipo2"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+                        <TextView
+                            android:id="@+id/parqueadero"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="****"
+                            android:textSize="25sp"
+                            android:textColor="@color/black"
+                            />
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/Cargandi"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="invisible"
+                        android:gravity="center"
+                        >
+                        <ImageView
+                            android:id="@+id/loading_screen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:src="@drawable/pantalla_carga"
+                            />
+                    </LinearLayout>
+
+                </FrameLayout>
+
+
+            </ScrollView>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+</LinearLayout>
