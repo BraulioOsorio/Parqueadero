@@ -168,7 +168,7 @@ public class ListaVendedores extends javax.swing.JPanel {
         modelo.setNumRows(0);
         try {
             if (datosVendedor != null) {
-                JsonObject jsonObject = gson.fromJson(datosVendedor, JsonObject.class);
+                JsonObject jsonObject = datosVendedor;
                 JsonArray registros = jsonObject.getAsJsonArray("registros");
 
                 for (JsonElement registro : registros) {
@@ -212,11 +212,11 @@ public class ListaVendedores extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void consumoVendedores() {
-        String respuesta = conexion.consumoGET("https://apiparqueadero.000webhostapp.com/usuarios/getVendNull.php");
+        String respuesta = conexion.consumoGET(ConsumoAPI.BASE_URL + "/usuarios/getVendNull.php");
 
         if (respuesta != null) {
             JsonParser parser = new JsonParser();
-            JsonObject jsonObject = parser.parse(respuesta).getAsJsonObject();
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(respuesta);
 
             // Asume que la respuesta contiene un arreglo llamado "registros"
             JsonArray registros = jsonObject.getAsJsonArray("registros");

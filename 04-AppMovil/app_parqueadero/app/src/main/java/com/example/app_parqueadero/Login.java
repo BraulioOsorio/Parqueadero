@@ -88,6 +88,13 @@ public class Login extends AppCompatActivity {
                 public void onResponse(JSONObject response) {
                     System.out.println("Respuesta del servidor: " + response.toString());
                     try {
+                        if (response.optBoolean("error", false)) {
+                            String msg = response.optString("mensaje", "Error del servidor");
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                            ocultarGif();
+                            info.setVisibility(View.VISIBLE);
+                            return;
+                        }
                         Boolean statusResponse = response.getBoolean("status");
                         if(statusResponse){
                             JSONObject objectUser = response.getJSONObject("usuario");
@@ -125,20 +132,25 @@ public class Login extends AppCompatActivity {
                                 info.setVisibility(View.VISIBLE);
                             }
                         }else{
-                            Toast.makeText(getApplicationContext(),"Usuario no registrado en el sistema", Toast.LENGTH_LONG).show();
+                            String msg = response.optString("mesagge", response.optString("message", "Usuario no registrado en el sistema"));
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                             ocultarGif();
                             info.setVisibility(View.VISIBLE);
                         }
 
                     }catch (Exception e){
-                        cargarGif();
+                        ocultarGif();
+                        info.setVisibility(View.VISIBLE);
+                        Toast.makeText(getApplicationContext(), "Error al leer la respuesta del servidor.", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onError(String errorMessage) {
-                    cargarGif();
+                    ocultarGif();
+                    info.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "Error de conexión. Comprueba la URL del servidor.", Toast.LENGTH_LONG).show();
                     System.out.println("Error del servidor: " + errorMessage);
                 }
             });

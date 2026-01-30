@@ -292,9 +292,9 @@ public class EditarParqueadero extends javax.swing.JPanel {
             datosParqueadero.put("estado", (String) ((estadoNew.equals("ACTIVO")) ? "1" : "0"));
 
             try {
-                String temporal = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueaderos/UpdateParking.php", datosParqueadero);
+                String temporal = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueaderos/UpdateParking.php", datosParqueadero);
 
-                JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
                 System.out.println(jsonObject);
 
                 if (jsonObject.get("status").getAsBoolean()) {
@@ -327,8 +327,8 @@ public class EditarParqueadero extends javax.swing.JPanel {
         Map<String, String> dataPost = new HashMap<>();
         dataPost.put("nombre", nombreBuscado);
         try {
-            String response = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueaderos/BuscarParqueadero.php", dataPost);
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+            String response = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueaderos/BuscarParqueadero.php", dataPost);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
             System.out.println(jsonObject);
 
             JsonArray registros = jsonObject.getAsJsonArray("parqueadero");

@@ -211,10 +211,33 @@ public class Login extends javax.swing.JFrame {
             ingresarData.put("contrasenia", contrasenia);
 
             try {
-                String temporal = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/usuarios/LoginGet.php", ingresarData);
+                String temporal = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/usuarios/LoginGet.php", ingresarData);
                 
-                JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
 
+                if (jsonObject == null) {
+                    JOptionPane.showMessageDialog(null, "Error de conexión. Comprueba que la API esté en marcha (localhost:8080).");
+                    return;
+                }
+                // Respuesta de error de la API (ej. no puede conectar a la base de datos)
+                if (jsonObject.has("error") && jsonObject.get("error").getAsBoolean()) {
+                    String msg = jsonObject.has("mensaje") ? jsonObject.get("mensaje").getAsString() : "Error del servidor.";
+                    JOptionPane.showMessageDialog(null, msg);
+                    return;
+                }
+                // Si el login falla (status false), mostrar el mensaje de la API
+                if (jsonObject.has("status") && !jsonObject.get("status").getAsBoolean()) {
+                    String msg = "No se encontró al Usuario";
+                    if (jsonObject.has("mesagge")) {
+                        msg = jsonObject.get("mesagge").getAsString();
+                    } else if (jsonObject.has("message")) {
+                        msg = jsonObject.get("message").getAsString();
+                    } else if (jsonObject.has("mensaje")) {
+                        msg = jsonObject.get("mensaje").getAsString();
+                    }
+                    JOptionPane.showMessageDialog(null, msg);
+                    return;
+                }
                 if (jsonObject.has("usuario")) {
                     JsonObject registro = jsonObject.getAsJsonObject("usuario");
                     String estados = registro.get("estado").getAsString();
@@ -224,10 +247,8 @@ public class Login extends javax.swing.JFrame {
                         Parqueadero ventanaParqueadero = new Parqueadero(registro);
                         dispose();
                     }
-                    
-                    
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se encontro al Usuario");
+                    JOptionPane.showMessageDialog(null, "No se encontró al Usuario");
                 }
             } catch (Exception e) {
                 System.out.println(e.toString());

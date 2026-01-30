@@ -60,18 +60,29 @@ public class InicioActivityVend extends DrawerVendedor {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
+                        if (response.optBoolean("error", false)) {
+                            gifLoading.setVisibility(View.GONE);
+                            android.widget.Toast.makeText(InicioActivityVend.this,
+                                    response.optString("mensaje", "Error del servidor"), android.widget.Toast.LENGTH_LONG).show();
+                            return;
+                        }
                         JSONObject parqueadero = response.getJSONObject("registros");
                         String id_parqueadero =  parqueadero.getString("id_parqueadero");
                         SharedPreferences.Editor editor = archivo.edit();
                         editor.putString("id_parqueadero", id_parqueadero);
                         editor.apply();
+                        gifLoading.setVisibility(View.GONE);
                     }catch (Exception e){
                         e.printStackTrace();
+                        gifLoading.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void onError(String errorMessage) {
+                    gifLoading.setVisibility(View.GONE);
+                    android.widget.Toast.makeText(InicioActivityVend.this,
+                            "Error de conexión. Comprueba la URL del servidor.", android.widget.Toast.LENGTH_LONG).show();
                     System.out.println(errorMessage);
                 }
             });

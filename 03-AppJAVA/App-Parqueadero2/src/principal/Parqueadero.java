@@ -218,13 +218,15 @@ public class Parqueadero extends javax.swing.JFrame {
             panel_menu.removeAll();
 
             JsonObject datosParquedero = getDatosParqueadero(cedula);
-            MenuVend panelVendedor = new MenuVend(panel_contenido, datosParquedero, usuario);
-
-            panelVendedor.setSize(panel_menu.getSize());
-            panel_menu.add(panelVendedor);
-
-            nombreParqueadero = datosParquedero.getAsJsonObject("registros").get("nombre").getAsString();
-
+            if (datosParquedero != null && datosParquedero.has("registros")) {
+                MenuVend panelVendedor = new MenuVend(panel_contenido, datosParquedero, usuario);
+                panelVendedor.setSize(panel_menu.getSize());
+                panel_menu.add(panelVendedor);
+                nombreParqueadero = datosParquedero.getAsJsonObject("registros").get("nombre").getAsString();
+            } else {
+                nombreParqueadero = "Error de conexión";
+                javax.swing.JOptionPane.showMessageDialog(this, "No se pudo cargar el parqueadero. Comprueba la API.");
+            }
         }
 
         etq_nombre_parqueadero.setText(nombreParqueadero.toUpperCase());
@@ -243,10 +245,9 @@ public class Parqueadero extends javax.swing.JFrame {
 
         try {
 
-            String temporal = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/parqueaderos/getParqueaderoVend.php", data);
+            String temporal = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/parqueaderos/getParqueaderoVend.php", data);
 
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
-            parqueadero = jsonObject;
+            parqueadero = ConsumoAPI.parseJsonObject(temporal);
         } catch (Exception e) {
             System.out.println("Error en getDatosParqueadero");
         }

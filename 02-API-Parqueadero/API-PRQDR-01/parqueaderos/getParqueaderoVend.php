@@ -8,7 +8,7 @@ if (!empty($_GET['id_usuario'])) {
     $id_usuario = $_GET['id_usuario'];
 
     try {
-        $consulta = $base_de_datos->prepare("SELECT parqueadero.* FROM parqueadero JOIN parqueadero_vendedores ON parqueadero.id_parqueadero = parqueadero_vendedores.id_parqueadero WHERE parqueadero_vendedores.id_usuario = :id  LIMIT 1");
+        $consulta = $base_de_datos->prepare("SELECT parqueadero.* FROM parqueadero JOIN parqueadero_vendedores ON parqueadero.id_parqueadero = parqueadero_vendedores.id_parqueadero WHERE parqueadero_vendedores.id_usuario = :id AND parqueadero.estado = 1 LIMIT 1");
         $consulta->bindParam(':id', $id_usuario);
 
         $proceso = $consulta->execute();

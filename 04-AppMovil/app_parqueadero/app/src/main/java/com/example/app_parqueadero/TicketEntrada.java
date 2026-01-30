@@ -80,9 +80,10 @@ public class TicketEntrada extends DrawerVendedor {
         String placa = campo_buscar_placa.getText().toString();
         url = dataConfig.getEndPoint("/vehiculos/findPlaca.php");
 
-        if (!placa.equals("")) {
+        if (!placa.equals("") && id_parqueadero != null) {
             datosPots = new HashMap<String, String>();
-            datosPots.put("placa",placa);
+            datosPots.put("placa", placa);
+            datosPots.put("id_parqueadero", id_parqueadero);
 
             conexion.consumoPOST(url, datosPots, new Utils.JsonResponseListenerPOST() {
 
@@ -130,9 +131,12 @@ public class TicketEntrada extends DrawerVendedor {
 
 
 
+        } else if (id_parqueadero == null) {
+            ocultarGif();
+            Toast.makeText(getApplicationContext(), "Sesión de parqueadero no disponible. Inicie sesión.", Toast.LENGTH_LONG).show();
         } else {
             ocultarGif();
-            Toast.makeText(getApplicationContext(),"El campo es requerido", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "El campo es requerido", Toast.LENGTH_LONG).show();
         }
     }
 

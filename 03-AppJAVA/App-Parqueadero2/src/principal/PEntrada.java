@@ -261,11 +261,12 @@ public class PEntrada extends javax.swing.JPanel {
         if (!placa.equals("")) {
             Map<String, String> insertDataFind = new HashMap<>();
             insertDataFind.put("placa", placa);
-            String respuestaSelect = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/vehiculos/findPlaca.php", insertDataFind);
+            insertDataFind.put("id_parqueadero", id_p);
+            String respuestaSelect = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/vehiculos/findPlaca.php", insertDataFind);
 
             if (respuestaSelect != null) {
-                JsonParser parser = new JsonParser();
-                JsonObject registroFind = parser.parse(respuestaSelect).getAsJsonObject();
+                JsonObject registroFind = ConsumoAPI.parseJsonObject(respuestaSelect);
+                if (registroFind != null && registroFind.has("status")) {
                 boolean statusFind = registroFind.get("status").getAsBoolean();
 
                 if (statusFind) {
@@ -341,6 +342,9 @@ public class PEntrada extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "No se encontró la placa, debe registrar el vehículo");
 
             }
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error de conexión. Respuesta no válida.");
+            }
         } else {
             limpiarDataTicket();
             btn_buscar_placa.setEnabled(true);
@@ -371,11 +375,13 @@ public class PEntrada extends javax.swing.JPanel {
             Map<String, String> insertData = new HashMap<>();
             insertData.put("placa", placa);
             insertData.put("id_parqueadero", id_p);
-            String respuestaInsert = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/tickets/insertTicket.php", insertData);
+            String respuestaInsert = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/tickets/insertTicket.php", insertData);
             System.out.println(respuestaInsert);
-            JsonParser parser = new JsonParser();
-            
-            JsonObject registroInsert = parser.parse(respuestaInsert).getAsJsonObject();
+            JsonObject registroInsert = ConsumoAPI.parseJsonObject(respuestaInsert);
+            if (registroInsert == null || !registroInsert.has("status")) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Error de conexión. Respuesta no válida.");
+                return;
+            }
             boolean statusInsert = registroInsert.get("status").getAsBoolean();
             
             System.out.println(statusInsert);

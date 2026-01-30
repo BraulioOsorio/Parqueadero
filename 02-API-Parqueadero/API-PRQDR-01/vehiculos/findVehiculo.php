@@ -4,13 +4,14 @@
 
 include '../Conexion.php';
 
-if (!empty($_POST['placa'])) {
+if (!empty($_POST['placa']) && !empty($_POST['id_parqueadero'])) {
     $placa = $_POST['placa'];
+    $id_parqueadero = (int) $_POST['id_parqueadero'];
+    $parametroPlaca = '%' . $placa . '%';
 
     try {
-        $consulta = $base_de_datos->prepare("SELECT * FROM vehiculo_registrados WHERE placa LIKE :pla OR propietario LIKE :pla OR tipo LIKE :pla");
-        $parametroPlaca = '%' . $placa . '%'; 
-
+        $consulta = $base_de_datos->prepare("SELECT * FROM vehiculo_registrados WHERE id_parqueadero = :idP AND (placa LIKE :pla OR propietario LIKE :pla OR tipo LIKE :pla)");
+        $consulta->bindParam(':idP', $id_parqueadero, PDO::PARAM_INT);
         $consulta->bindValue(':pla', $parametroPlaca, PDO::PARAM_STR);
 
         $proceso = $consulta->execute();
@@ -18,17 +19,17 @@ if (!empty($_POST['placa'])) {
         $vehiculo = mb_convert_encoding($vehiculo,"UTF-8","iso-8859-1");
         $filas = $consulta->rowCount();
 
-        if ($filas == 1) {
+        if ($filas >= 1) {
             $respuesta = [
                 'status' => true,
-                'mesagge' => "Se encontró un vehículo",
+                'mesagge' => $filas === 1 ? "Se encontró un vehículo" : "Se encontraron vehículos",
                 'registros' => $vehiculo
             ];
             echo json_encode($respuesta);
         } else {
             $respuesta = [
                 'status' => false,
-                'mesagge' => "ERROR##PARQUEADERO##GET"
+                'mesagge' => "No se encontraron registros"
             ];
             echo json_encode($respuesta);
         }

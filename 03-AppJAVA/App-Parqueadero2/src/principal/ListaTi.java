@@ -220,14 +220,13 @@ public final class ListaTi extends javax.swing.JPanel {
         try {
             Map<String, String> data = new HashMap<>();
             data.put("idP", idP);
-            String response = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/tickets/getTi.php",data);
+            String response = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/tickets/getTi.php",data);
             System.out.println(response);
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
-            
-
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
+            if (jsonObject == null || !jsonObject.has("registros")) {
+                return;
+            }
             JsonArray registros = jsonObject.getAsJsonArray("registros");
-            //!registros.isEmpty()
-            //registros.size() > 0
             if (registros.size() > 0) {
 
                 modelo.setNumRows(0);
@@ -278,16 +277,14 @@ public final class ListaTi extends javax.swing.JPanel {
         dataPost.put("placa", placa);
         dataPost.put("idP", idP);
         try {
-            String response = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/tickets/findTi.php", dataPost);
+            String response = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/tickets/findTi.php", dataPost);
             System.out.println(response);
             
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
-            
-            
-
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
+            if (jsonObject == null || !jsonObject.has("registros")) {
+                return;
+            }
             JsonArray registros = jsonObject.getAsJsonArray("registros");
-            //!registros.isEmpty()
-            //registros.size() > 0
             if (registros.size() > 0) {
 
                 modelo.setNumRows(0);

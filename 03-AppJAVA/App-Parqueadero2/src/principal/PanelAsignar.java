@@ -200,12 +200,12 @@ public class PanelAsignar extends javax.swing.JPanel {
         if (!documento.equals("")) {
             Map<String, String> insertData = new HashMap<>();
             insertData.put("documento", documento);
-            String respuestaFindVendedor = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/usuarios/findVendedor.php", insertData);
+            String respuestaFindVendedor = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/usuarios/findVendedor.php", insertData);
 
             if (respuestaFindVendedor != null) {
-                JsonObject jsonObject = gson.fromJson(respuestaFindVendedor, JsonObject.class);
+                JsonObject jsonObject = ConsumoAPI.parseJsonObject(respuestaFindVendedor);
                 
-                if (jsonObject.size() > 0) {
+                if (jsonObject != null && jsonObject.size() > 0 && jsonObject.has("vendedor")) {
                     
                     String estado= jsonObject.getAsJsonObject("vendedor").get("estado").getAsString();
 
@@ -247,12 +247,12 @@ public class PanelAsignar extends javax.swing.JPanel {
         Map<String, String> insertData = new HashMap<>();
         insertData.put("id_usuario", documento);
         insertData.put("id_parqueadero", id_parqueadero);
-        String respuestaAsignarVend = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueadero_vendedores/asignarVendedor.php",insertData);
+        String respuestaAsignarVend = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueadero_vendedores/asignarVendedor.php",insertData);
 
         if (respuestaAsignarVend != null) {
-            JsonParser parser = new JsonParser();
-            JsonObject registroAsignar = parser.parse(respuestaAsignarVend).getAsJsonObject();
+            JsonObject registroAsignar = ConsumoAPI.parseJsonObject(respuestaAsignarVend);
 
+            if (registroAsignar != null && registroAsignar.has("status")) {
             boolean status = registroAsignar.get("status").getAsBoolean();
 
             if (status) {
@@ -266,6 +266,12 @@ public class PanelAsignar extends javax.swing.JPanel {
             } else {
                 String message = registroAsignar.get("mesagge").getAsString();
                 System.out.println("No se pudo asignar el usuario: " + message);
+            }
+            } else {
+                campo_cedula.setText("");
+                etq_rol_vendedor.setText("Error de conexión. Respuesta no válida.");
+                etq_rol_vendedor.setForeground(Color.red);
+                etq_rol_vendedor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             }
         } else {
             campo_cedula.setText("");

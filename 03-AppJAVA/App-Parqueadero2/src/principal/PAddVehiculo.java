@@ -9,9 +9,14 @@ import java.util.Map;
 public class PAddVehiculo extends javax.swing.JPanel {
 
     ConsumoAPI conexion = new ConsumoAPI();
+    private final String id_parqueadero;
 
-    public PAddVehiculo() {
+    public PAddVehiculo(String id_parqueadero) {
+        this.id_parqueadero = id_parqueadero;
         initComponents();
+        // Solo se pide placa y tipo; el propietario se guarda igual que la placa
+        etq_propietario.setVisible(false);
+        campo_propietario.setVisible(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -159,27 +164,28 @@ public class PAddVehiculo extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void registrarVehiculo() {
-        String placa = campo_placa.getText().toUpperCase();
-        String propietario = campo_propietario.getText();
+        String placa = campo_placa.getText().toUpperCase().trim();
         String tipo = opcion_vehiculo.getSelectedItem().toString();
 
         if (placa.length() == 6) {
-            if (tipo.equals("") || placa.equals("") || propietario.equals("")) {
+            if (tipo.equals("") || placa.equals("")) {
                 etq_mensaje.setForeground(Color.red);
-                etq_mensaje.setText("No se pueden enviar campos vacios");
+                etq_mensaje.setText("No se pueden enviar campos vacíos");
             } else {
                 Map<String, String> insertDataFind = new HashMap<>();
                 insertDataFind.put("placa", placa);
-                String respuestaSelect = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/vehiculos/findVehiculo.php", insertDataFind);
+                insertDataFind.put("id_parqueadero", id_parqueadero);
+                String respuestaSelect = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/vehiculos/findVehiculo.php", insertDataFind);
                 System.out.println("respuesta del select" + respuestaSelect);
 
                 if (respuestaSelect != null) {
-                    JsonParser parser = new JsonParser();
-                    JsonObject registroFind = parser.parse(respuestaSelect).getAsJsonObject();
-
+                    JsonObject registroFind = ConsumoAPI.parseJsonObject(respuestaSelect);
+                    if (registroFind == null || !registroFind.has("status")) {
+                        javax.swing.JOptionPane.showMessageDialog(this, "Error de conexión.");
+                        return;
+                    }
                     boolean statusFind = registroFind.get("status").getAsBoolean();
                     System.out.println(statusFind);
-                            
 
                     if (statusFind) {
                         etq_mensaje.setForeground(Color.red);
@@ -188,24 +194,26 @@ public class PAddVehiculo extends javax.swing.JPanel {
                         System.out.println("Tipo de vehiculo: " + tipo);
                         Map<String, String> insertData = new HashMap<>();
                         insertData.put("placa", placa);
-                        insertData.put("propietario", propietario);
+                        insertData.put("id_parqueadero", id_parqueadero);
+                        insertData.put("propietario", placa);
                         insertData.put("tipo_vehiculo", tipo);
-                        String respuestaInsert = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/vehiculos/insertVehiculo.php", insertData);
+                        String respuestaInsert = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/vehiculos/insertVehiculo.php", insertData);
 
                         if (respuestaInsert != null) {
-                            JsonObject registroAsignar = parser.parse(respuestaInsert).getAsJsonObject();
-
+                            JsonObject registroAsignar = ConsumoAPI.parseJsonObject(respuestaInsert);
+                            if (registroAsignar == null || !registroAsignar.has("status")) {
+                                javax.swing.JOptionPane.showMessageDialog(this, "Error de conexión.");
+                                return;
+                            }
                             boolean status = registroAsignar.get("status").getAsBoolean();
 
                             if (status) {
                                 campo_placa.setText("");
-                                campo_propietario.setText("");
                                 opcion_vehiculo.setSelectedIndex(0);
                                 etq_mensaje.setForeground(Color.green);
-                                etq_mensaje.setText("Vehiculo registrado exitosamente");
+                                etq_mensaje.setText("Vehículo registrado exitosamente");
                             } else {
                                 campo_placa.setText("");
-                                campo_propietario.setText("");
                                 opcion_vehiculo.setSelectedIndex(0);
                                 etq_mensaje.setForeground(Color.red);
                                 etq_mensaje.setText("Hubieron problemas al registrar el vehiculo, llame al programador");

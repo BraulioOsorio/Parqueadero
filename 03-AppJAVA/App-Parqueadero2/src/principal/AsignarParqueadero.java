@@ -168,12 +168,14 @@ public class AsignarParqueadero extends javax.swing.JPanel {
             Map<String, String> insertData = new HashMap<>();
             insertData.put("id_parqueadero", id_parqueadero);
             System.out.println("antes de aca");
-            String respuestaCantVend = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueaderos/selectCantVend.php", insertData);
+            String respuestaCantVend = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueaderos/selectCantVend.php", insertData);
             System.out.println("Llego: "+respuestaCantVend);
             
             if (respuestaCantVend != null) {
-                JsonParser parser = new JsonParser();
-                JsonObject registroCount = parser.parse(respuestaCantVend).getAsJsonObject();
+                JsonObject registroCount = ConsumoAPI.parseJsonObject(respuestaCantVend);
+                if (registroCount == null || !registroCount.has("cantVendedores")) {
+                    return;
+                }
                 int cantVendedores = registroCount.get("cantVendedores").getAsInt();
                 System.out.println("Llegooooo: "+cantVendedores);
 

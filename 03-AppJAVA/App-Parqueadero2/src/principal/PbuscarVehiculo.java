@@ -32,8 +32,10 @@ public class PbuscarVehiculo extends javax.swing.JPanel {
     ConsumoAPI conexion = new ConsumoAPI();
     Gson gson = new Gson();
     DefaultTableModel tableModel;
+    private final String id_parqueadero;
 
-    public PbuscarVehiculo() {
+    public PbuscarVehiculo(String id_parqueadero) {
+        this.id_parqueadero = id_parqueadero;
         initComponents();
         initComponentsAltern();
         llenarTabla();
@@ -233,17 +235,19 @@ public class PbuscarVehiculo extends javax.swing.JPanel {
 
         Map<String, String> dataPost = new HashMap<>();
         dataPost.put("placa", placa);
+        dataPost.put("id_parqueadero", id_parqueadero);
         try {
-            String response = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/vehiculos/findVehiculo.php", dataPost);
+            String response = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/vehiculos/findVehiculo.php", dataPost);
 
             System.out.println("respuesta " + response);
 
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
-
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
+            if (jsonObject == null || !jsonObject.has("registros")) {
+                JOptionPane.showMessageDialog(null, "Error de conexión o sin resultados.");
+                return;
+            }
             JsonArray registros = jsonObject.getAsJsonArray("registros");
             System.out.println(registros);
-            //!registros.isEmpty()
-            //registros.size() > 0
             if (registros.size() > 0) {
 
                 tableModel = (DefaultTableModel) tabla_parqueaderos.getModel();
@@ -277,13 +281,13 @@ public class PbuscarVehiculo extends javax.swing.JPanel {
 
     private void llenarTabla() {
         try {
-            String response = conexion.consumoGET("https://apiparqueadero.000webhostapp.com/vehiculos/getVehiculos.php");
+            String response = conexion.consumoGET(ConsumoAPI.BASE_URL + "/vehiculos/getVehiculos.php?id_parqueadero=" + id_parqueadero);
             System.out.println(response);
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
-
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
+            if (jsonObject == null || !jsonObject.has("registros")) {
+                return;
+            }
             JsonArray registros = jsonObject.getAsJsonArray("registros");
-            //!registros.isEmpty()
-            //registros.size() > 0
             if (registros.size() > 0) {
                 tableModel = (DefaultTableModel) tabla_parqueaderos.getModel();
                 tableModel.setNumRows(0);

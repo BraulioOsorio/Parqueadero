@@ -236,9 +236,9 @@ public class CrearVendedores extends javax.swing.JPanel {
                     ingresarData.put("documento", cedula);
 
                     try {
-                        String temporal = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/usuarios/Insert.php", ingresarData);
+                        String temporal = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/usuarios/Insert.php", ingresarData);
 
-                        JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                        JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
 
                         if (jsonObject.has("mesagge")) {
                             String mensajeDeError = jsonObject.get("mesagge").getAsString();
@@ -302,10 +302,10 @@ public class CrearVendedores extends javax.swing.JPanel {
                         ingresarData.put("documento", cedula);
 
                         try {
-                            String temporal = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/usuarios/Insert.php", ingresarData);
+                            String temporal = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/usuarios/Insert.php", ingresarData);
 
                             System.out.println(temporal);
-                            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                            JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
                             System.out.println(jsonObject.toString());
                             
                             if (jsonObject.has("mesagge")) {

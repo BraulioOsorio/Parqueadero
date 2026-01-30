@@ -34,7 +34,7 @@ public class Config {
     }
 
     public String getEndPoint(String endpoint){
-        //endpoint = endpoint.replaceFirst("/","");
-        return  apiHost+"/"+endpoint;
+        if (endpoint != null && endpoint.startsWith("/")) endpoint = endpoint.substring(1);
+        return apiHost + (apiHost.endsWith("/") ? "" : "/") + (endpoint != null ? endpoint : "");
     }
 }

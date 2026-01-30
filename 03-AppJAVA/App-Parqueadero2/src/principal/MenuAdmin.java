@@ -360,9 +360,8 @@ public class MenuAdmin extends javax.swing.JPanel {
         JsonObject vendedor = null;
         
         try {
-            String temporal = conexion.consumoGET("https://apiparqueadero.000webhostapp.com/usuarios/getVendedoresAll.php");
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
-            vendedor = jsonObject;            
+            String temporal = conexion.consumoGET(ConsumoAPI.BASE_URL + "/usuarios/getVendedoresAll.php");
+            vendedor = ConsumoAPI.parseJsonObject(temporal);            
         } catch (Exception e) {
             System.out.println("Error en getDatosVendedores");
         }
@@ -373,10 +372,9 @@ public class MenuAdmin extends javax.swing.JPanel {
         JsonObject parqueadero = null;
         
         try {
-            String temporal = conexion.consumoGET("https://apiparqueadero.000webhostapp.com/parqueaderos/getParqueaderos.php");
+            String temporal = conexion.consumoGET(ConsumoAPI.BASE_URL + "/parqueaderos/getParqueaderos.php");
             
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
-            parqueadero = jsonObject;            
+            parqueadero = ConsumoAPI.parseJsonObject(temporal);            
 
         } catch (Exception e) {
             System.out.println("Error en getDatosParqueadero");

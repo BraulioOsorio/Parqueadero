@@ -237,7 +237,7 @@ public class DefinirTarifas extends javax.swing.JPanel {
         datosTarifas.put("id_parqueadero", id_parqueadero);
 
         try {
-            conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/vendedores/definirTarifas.php", datosTarifas);
+            conexion.consumoPOST(ConsumoAPI.BASE_URL + "/vendedores/definirTarifas.php", datosTarifas);
             JOptionPane.showMessageDialog(null, "Tarifas Actualizadas Con Exito");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Intentalo de nuevo");
@@ -271,8 +271,11 @@ public class DefinirTarifas extends javax.swing.JPanel {
             System.out.println(id_parqueadero);
             Map<String, String> datosTarifas = new HashMap<>();
             datosTarifas.put("id", id_parqueadero); // Debes usar "id_parqueadero" como clave
-            String tarifas = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/vendedores/getTarifas.php",datosTarifas);
-            JsonObject jsonObject = gson.fromJson(tarifas, JsonObject.class);
+            String tarifas = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/vendedores/getTarifas.php",datosTarifas);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(tarifas);
+            if (jsonObject == null || !jsonObject.has("tarifas")) {
+                return;
+            }
             System.out.println(jsonObject.toString());
             JsonObject tarifa = jsonObject.getAsJsonObject("tarifas");
             System.out.println(tarifas);

@@ -216,9 +216,9 @@ public class CrearParqueadero extends javax.swing.JPanel {
 
             if (verificarNombreUnico(nombre)) {
                 try {
-                    String temporal = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueaderos/Insert.php", datosParqueadero);
+                    String temporal = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueaderos/Insert.php", datosParqueadero);
 
-                    JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                    JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
                     System.out.println(jsonObject);
 
                     if (jsonObject.get("status").getAsBoolean()) {
@@ -248,9 +248,9 @@ public class CrearParqueadero extends javax.swing.JPanel {
         Map<String, String> dataPost = new HashMap<>();
         dataPost.put("nombre", nombre);
         try {
-            String response = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/parqueaderos/BuscarParqueadero.php", dataPost);
+            String response = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/parqueaderos/BuscarParqueadero.php", dataPost);
             System.out.println("respuesta: "+response);
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
             System.out.println(jsonObject);
 
             JsonArray registros = jsonObject.getAsJsonArray("parqueadero");

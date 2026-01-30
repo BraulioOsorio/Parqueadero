@@ -1,6 +1,8 @@
 package com.example.app_parqueadero;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,7 +54,11 @@ public class BuscarVehiculoVend extends DrawerVendedor{
         config = new Config(getApplicationContext());
         Cargandi = findViewById(R.id.Cargandi);
         loading_screen = findViewById(R.id.loading_screen);
-        url = config.getEndPoint("/vehiculos/getVehiculos.php");
+        SharedPreferences archivo = getSharedPreferences("data_usuario", Context.MODE_PRIVATE);
+        String idParqueadero = archivo.getString("id_parqueadero", null);
+        url = idParqueadero != null
+                ? config.getEndPoint("/vehiculos/getVehiculos.php") + "?id_parqueadero=" + idParqueadero
+                : config.getEndPoint("/vehiculos/getVehiculos.php");
         Datos = findViewById(R.id.Datos);
         printAllVehiculos(url);
         campo_email.setOnTouchListener(new View.OnTouchListener() {
@@ -118,8 +124,13 @@ public class BuscarVehiculoVend extends DrawerVendedor{
         Datos.setVisibility(View.INVISIBLE);
 
         cargarGif();
+        SharedPreferences archivo = getSharedPreferences("data_usuario", Context.MODE_PRIVATE);
+        String idParqueadero = archivo.getString("id_parqueadero", null);
         Map<String, String> datosPost = new HashMap<String, String>();
         datosPost.put("placa", txtSearch);
+        if (idParqueadero != null) {
+            datosPost.put("id_parqueadero", idParqueadero);
+        }
 
         functions.consumoPOST(urlFind, datosPost, new Utils.JsonResponseListenerPOST(){
 

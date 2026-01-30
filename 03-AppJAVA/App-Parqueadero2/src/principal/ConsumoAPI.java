@@ -1,6 +1,9 @@
 package principal;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -12,7 +15,26 @@ import java.util.Map;
 
 public class ConsumoAPI {
 
+    /** URL base de la API. Cambiar aquí para local o producción. */
+    public static final String BASE_URL = "http://localhost:8080/API-PRQDR-01";
+    // Apache local: "http://localhost/API-PRQDR-01"  |  Producción: "https://apiparqueadero.000webhostapp.com"
+    // GoogieHost: "https://tudominio.googiehost.com/api" (cuando lo tengas)
+
     public ConsumoAPI() {
+    }
+
+    /**
+     * Parsea la respuesta de la API a JsonObject de forma segura.
+     * Devuelve null si la respuesta es null, vacía, o no es un objeto JSON.
+     */
+    public static JsonObject parseJsonObject(String json) {
+        if (json == null || json.trim().isEmpty()) return null;
+        try {
+            JsonElement el = JsonParser.parseString(json.trim());
+            return (el != null && el.isJsonObject()) ? el.getAsJsonObject() : null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String consumoGET(String endpoint) {

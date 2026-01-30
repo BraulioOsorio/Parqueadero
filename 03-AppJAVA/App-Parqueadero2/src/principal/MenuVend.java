@@ -185,7 +185,8 @@ public class MenuVend extends javax.swing.JPanel {
 
     private void btnBuscarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVehiculoActionPerformed
         panel_contenido.removeAll();
-        PbuscarVehiculo buscarVehiculo = new PbuscarVehiculo();
+        String parqueadero = datosParqueadero.getAsJsonObject("registros").get("id_parqueadero").getAsString();
+        PbuscarVehiculo buscarVehiculo = new PbuscarVehiculo(parqueadero);
         buscarVehiculo.setSize(panel_contenido.getSize());
         panel_contenido.add(buscarVehiculo);
         repaint();
@@ -214,7 +215,8 @@ public class MenuVend extends javax.swing.JPanel {
 
     private void addVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVehiculoActionPerformed
         panel_contenido.removeAll();
-        PAddVehiculo addVehiculo = new PAddVehiculo();
+        String parqueadero = datosParqueadero.getAsJsonObject("registros").get("id_parqueadero").getAsString();
+        PAddVehiculo addVehiculo = new PAddVehiculo(parqueadero);
         addVehiculo.setSize(panel_contenido.getSize());
         panel_contenido.add(addVehiculo);
         repaint();
@@ -236,9 +238,13 @@ public class MenuVend extends javax.swing.JPanel {
 
         String id_parqueadero = datosParqueadero.getAsJsonObject("registros").get("id_parqueadero").getAsString();
         JsonObject datosActuales = getParkin(id_parqueadero);
-        InfoParqueadero infoParking = new InfoParqueadero(datosActuales);
-        infoParking.setSize(panel_contenido.getSize());
-        panel_contenido.add(infoParking);
+        if (datosActuales != null && datosActuales.has("registros")) {
+            InfoParqueadero infoParking = new InfoParqueadero(datosActuales);
+            infoParking.setSize(panel_contenido.getSize());
+            panel_contenido.add(infoParking);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pudo cargar la información. Comprueba la API.");
+        }
         repaint();
         revalidate();
     }//GEN-LAST:event_infoParqActionPerformed
@@ -350,10 +356,9 @@ public class MenuVend extends javax.swing.JPanel {
 
         try {
 
-            String temporal = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/parqueaderos/getParking.php", data);
+            String temporal = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/parqueaderos/getParking.php", data);
 
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
-            parqueadero = jsonObject;
+            parqueadero = ConsumoAPI.parseJsonObject(temporal);
         } catch (Exception e) {
             System.out.println("Error en getDatosParqueadero");
         }

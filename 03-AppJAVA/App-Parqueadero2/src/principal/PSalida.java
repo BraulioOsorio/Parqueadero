@@ -320,10 +320,10 @@ public class PSalida extends javax.swing.JPanel {
             Consultar.put("placa", campo_placa.getText());
             Consultar.put("ingreso", entrada.getText());
             Consultar.put("pago", costo.getText().replaceAll("\\.", ""));
+            Consultar.put("idP", this.id);
             System.out.println(entrada.getText());
-            
-            
-            String temporal = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/tickets/updateCosto.php", Consultar);
+
+            String temporal = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/tickets/updateCosto.php", Consultar);
             System.out.println(temporal);
             salida.setText("");
             entrada.setText("");
@@ -354,14 +354,14 @@ public class PSalida extends javax.swing.JPanel {
         if (placa.length() > 0) {
             Map<String, String> Consultar = new HashMap<>();
             Consultar.put("placa", placa);
-            Consultar.put("id", this.id);
+            Consultar.put("idP", this.id);
 
             try {
-                String temporal = conexion.ConsumoGET("https://apiparqueadero.000webhostapp.com/tickets/getCosto.php", Consultar);
+                String temporal = conexion.ConsumoGET(ConsumoAPI.BASE_URL + "/tickets/getCosto.php", Consultar);
                 System.out.println(temporal);
-                JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+                JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
 
-                if (jsonObject.has("registros")) {
+                if (jsonObject != null && jsonObject.has("registros")) {
                     JsonObject registros = jsonObject.getAsJsonObject("registros");
                     String horaSalida = registros.get("hora_salida").getAsString();
                     String horaIngreso = registros.get("hora_ingreso").getAsString();
@@ -376,7 +376,9 @@ public class PSalida extends javax.swing.JPanel {
                     costo.setText(totalPagar);
                     campo_placa.setEnabled(false);
                     
-                }else{
+                } else if (jsonObject == null) {
+                    JOptionPane.showMessageDialog(null, "Error de conexión. Comprueba la API.");
+                } else {
                     JOptionPane.showMessageDialog(null, "No se encontro El vehiculo en este parqueadero");
                 }
 

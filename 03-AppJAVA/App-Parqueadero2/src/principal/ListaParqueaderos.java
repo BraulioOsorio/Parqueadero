@@ -146,7 +146,7 @@ public final class ListaParqueaderos extends javax.swing.JPanel {
         modelo.setNumRows(0);
         try {
             if (datosParquedero != null) {
-                JsonObject jsonObject = gson.fromJson(datosParquedero, JsonObject.class);
+                JsonObject jsonObject = datosParquedero;
                 JsonArray registros = jsonObject.getAsJsonArray("registros");
 
                 for (JsonElement registro : registros) {
@@ -202,9 +202,9 @@ public final class ListaParqueaderos extends javax.swing.JPanel {
         JsonObject parqueadero = null;
         
         try {
-            String temporal = conexion.consumoGET("https://apiparqueadero.000webhostapp.com/parqueaderos/getParqueaderos.php");
+            String temporal = conexion.consumoGET(ConsumoAPI.BASE_URL + "/parqueaderos/getParqueaderos.php");
             
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
             parqueadero = jsonObject;            
 
         } catch (Exception e) {

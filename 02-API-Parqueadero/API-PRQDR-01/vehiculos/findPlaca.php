@@ -3,13 +3,15 @@
 
 include '../Conexion.php';
 
-if (!empty($_POST['placa'])) {
+if (!empty($_POST['placa']) && !empty($_POST['id_parqueadero'])) {
 
     $placa = $_POST['placa'];
+    $id_parqueadero = (int) $_POST['id_parqueadero'];
 
     try {
-        $consulta = $base_de_datos->prepare("SELECT * FROM vehiculo_registrados  WHERE placa = :pla  LIMIT 1");
+        $consulta = $base_de_datos->prepare("SELECT * FROM vehiculo_registrados WHERE placa = :pla AND id_parqueadero = :idP LIMIT 1");
         $consulta->bindParam(':pla', $placa);
+        $consulta->bindParam(':idP', $id_parqueadero, PDO::PARAM_INT);
 
         $proceso = $consulta->execute();
         $vehiculo = $consulta->fetch(PDO::FETCH_ASSOC);

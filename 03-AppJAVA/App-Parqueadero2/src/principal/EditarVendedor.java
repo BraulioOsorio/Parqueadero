@@ -248,10 +248,10 @@ public class EditarVendedor extends javax.swing.JPanel {
 
 
         try {
-            String temporal = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/usuarios/Update.php", updateData);
+            String temporal = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/usuarios/Update.php", updateData);
 
             System.out.println(temporal);
-            JsonObject jsonObject = gson.fromJson(temporal, JsonObject.class);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(temporal);
 
             if (jsonObject.has("mesagge")) {
                 String mensajeDeError = jsonObject.get("mesagge").getAsString();
@@ -306,9 +306,9 @@ public class EditarVendedor extends javax.swing.JPanel {
         Map<String, String> dataPost = new HashMap<>();
         dataPost.put("documento", documento);
         try {
-            String response = conexion.consumoPOST("https://apiparqueadero.000webhostapp.com/usuarios/findVendedor.php", dataPost);
+            String response = conexion.consumoPOST(ConsumoAPI.BASE_URL + "/usuarios/findVendedor.php", dataPost);
             
-            JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
+            JsonObject jsonObject = ConsumoAPI.parseJsonObject(response);
             System.out.println(jsonObject.toString());
             
             String identidad = jsonObject.getAsJsonObject("vendedor").get("documento").getAsString();

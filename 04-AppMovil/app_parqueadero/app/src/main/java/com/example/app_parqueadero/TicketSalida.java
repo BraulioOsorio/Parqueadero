@@ -8,7 +8,9 @@ import com.example.app_parqueadero.core.Config;
 import com.example.app_parqueadero.core.Utils;
 import com.example.app_parqueadero.databinding.ActivityTicketSalidaBinding;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -75,13 +77,21 @@ public class TicketSalida extends DrawerVendedor {
         cargarGif();
         url = dataConfig.getEndPoint("/tickets/getCosto.php");
 
+        SharedPreferences archivo = getSharedPreferences("data_usuario", Context.MODE_PRIVATE);
+        String idParqueadero = archivo.getString("id_parqueadero", null);
+        if (idParqueadero == null) {
+            ocultarGif();
+            Toast.makeText(getApplicationContext(), "No se pudo identificar el parqueadero. Cierre sesión y vuelva a entrar.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         datosPots = new HashMap<String, String>();
         if (campo_buscar_placa.getText().toString().equalsIgnoreCase("")){
-            datosPots.put("placa",placaIntent);
+            datosPots.put("placa", placaIntent);
         }else{
-            datosPots.put("placa",campo_buscar_placa.getText().toString());
+            datosPots.put("placa", campo_buscar_placa.getText().toString());
         }
+        datosPots.put("idP", idParqueadero);
 
         conexion.consumoGetParams(url, datosPots, new Utils.JsonResponseListener() {
 
@@ -98,10 +108,7 @@ public class TicketSalida extends DrawerVendedor {
                         detalleSalida.setVisibility(View.VISIBLE);
                         JSONObject objectUser = response.getJSONObject("registros");
 
-
                         horaIngreso.setText(objectUser.getString("hora_ingreso"));
-
-
                         horaSalida.setText(objectUser.getString("hora_salida"));
 
                         TextView tiempoEstacionado = findViewById(R.id.tiempoEstacionado);
@@ -112,9 +119,10 @@ public class TicketSalida extends DrawerVendedor {
                         ocultarGif();
                     }else{
                         ocultarGif();
+                        limpiarDatosTicket();
                         detalleSalida.setVisibility(View.INVISIBLE);
                         facturita.setVisibility(View.INVISIBLE);
-                        Toast.makeText(getApplicationContext(),"No se encontro nada", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "No hay factura pendiente en este parqueadero.", Toast.LENGTH_LONG).show();
                     }
 
                 }catch (Exception e){
@@ -159,11 +167,18 @@ public class TicketSalida extends DrawerVendedor {
 
                 String hola = costoTotal.getText().toString();
 
+                SharedPreferences archivo = getSharedPreferences("data_usuario", Context.MODE_PRIVATE);
+                String idParqueadero = archivo.getString("id_parqueadero", null);
+                if (idParqueadero == null) {
+                    Toast.makeText(getApplicationContext(), "No se pudo identificar el parqueadero.", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 datosget = new HashMap<String, String>();
-                datosget.put("salida",horaSalida.getText().toString().replace(" ", "%20"));
-                datosget.put("placa",placaDB);
+                datosget.put("salida", horaSalida.getText().toString().replace(" ", "%20"));
+                datosget.put("placa", placaDB);
                 datosget.put("ingreso", horaIngreso.getText().toString().replace(" ", "%20"));
                 datosget.put("pago", costoTotal.getText().toString().replaceAll("\\.", ""));
+                datosget.put("idP", idParqueadero);
 
                 conexion.consumoGetParams(url, datosget, new Utils.JsonResponseListener() {
 
@@ -189,8 +204,10 @@ public class TicketSalida extends DrawerVendedor {
                                 cambio.setText(formatoMoneda(cambioFormato));
 
                             }else{
-                                Toast.makeText(getApplicationContext(),"Hubo un error", Toast.LENGTH_LONG).show();
-
+                                String msg = response.optString("mesagge", "Hubo un error");
+                                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                                limpiarDatosTicket();
+                                detalleSalida.setVisibility(View.INVISIBLE);
                             }
 
                         }catch (Exception e){
@@ -214,6 +231,19 @@ public class TicketSalida extends DrawerVendedor {
 
 
     }
+
+    /** Limpia los datos del ticket para no mostrar info de otro parqueadero. */
+    private void limpiarDatosTicket() {
+        placaDB = null;
+        if (horaIngreso != null) horaIngreso.setText("");
+        if (horaSalida != null) horaSalida.setText("");
+        if (costoTotal != null) costoTotal.setText("");
+        TextView tiempoEstacionado = findViewById(R.id.tiempoEstacionado);
+        if (tiempoEstacionado != null) tiempoEstacionado.setText("");
+        EditText valorPagado = findViewById(R.id.valorPagado);
+        if (valorPagado != null) valorPagado.setText("");
+    }
+
     public static String formatoMoneda(String numeroString) {
         try {
             // Parsea el valor de la cadena a float

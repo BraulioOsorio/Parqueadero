@@ -2,6 +2,8 @@ package com.example.app_parqueadero;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -64,67 +66,77 @@ public class Buscarticket extends AppCompatActivity {
     public void buscarCarro(View view) {
         factura_pendiente.setVisibility(View.INVISIBLE);
         datosCarro.setVisibility(View.INVISIBLE);
-        cargarGif();
 
         String placa = campo_buscar_placa.getText().toString();
-        String url = dataConfig.getEndPoint("/vehiculos/findPlaca.php");
-
-        if (!placa.equals("")) {
-            datosPots = new HashMap<String, String>();
-            datosPots.put("placa",placa);
-
-            conexion.consumoPOST(url, datosPots, new Utils.JsonResponseListenerPOST() {
-
-                @Override
-                public void onResponse(String response) {
-                    System.out.println("Respuesta del servidor: " + response.toString());
-
-                    try {
-                        JSONObject jsonResponse = new JSONObject(response);
-
-                        Boolean statusResponse = jsonResponse.getBoolean("status");
-                        TextView notifi = findViewById(R.id.notifi);
-
-                        if(statusResponse){
-                                notifi.setText("El vehículo no tiene una Factura pendiente");
-                                datosTikect(placa);
-                                ocultarGif();
-
-                        }else{
-                            datosCarro.setVisibility(View.INVISIBLE);
-                            factura_pendiente.setVisibility(View.VISIBLE);
-
-                            notifi.setText("El vehiculo no se encuentra registrado");
-                            ocultarGif();
-                        }
-
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        cargarGif();
-                    }
-                }
-
-                @Override
-                public void onError(String errorMessage) {
-                    System.out.println("Error del servidor: " + errorMessage);
-                    cargarGif();
-                }
-            });
-
-
-
-        } else {
-            Toast.makeText(getApplicationContext(),"El campo es requerido", Toast.LENGTH_LONG).show();
+        if (placa.equals("")) {
+            Toast.makeText(getApplicationContext(), "El campo es requerido", Toast.LENGTH_LONG).show();
+            return;
         }
+
+        SharedPreferences archivo = getSharedPreferences("data_usuario", Context.MODE_PRIVATE);
+        String idParqueadero = archivo.getString("id_parqueadero", null);
+
+        // Propietario sin sesión: consultar ticket directamente (getCosto sin idP)
+        if (idParqueadero == null) {
+            datosTikect(placa, null);
+            return;
+        }
+
+        // Vendedor con sesión: comprobar si el vehículo está registrado en su parqueadero y luego mostrar ticket
+        cargarGif();
+        String url = dataConfig.getEndPoint("/vehiculos/findPlaca.php");
+        datosPots = new HashMap<String, String>();
+        datosPots.put("placa", placa);
+        datosPots.put("id_parqueadero", idParqueadero);
+
+        conexion.consumoPOST(url, datosPots, new Utils.JsonResponseListenerPOST() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("Respuesta del servidor: " + response.toString());
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    TextView notifi = findViewById(R.id.notifi);
+                    if (jsonResponse.optBoolean("error", false)) {
+                        ocultarGif();
+                        Toast.makeText(Buscarticket.this, jsonResponse.optString("mensaje", "Error del servidor."), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    Boolean statusResponse = jsonResponse.getBoolean("status");
+                    if (statusResponse) {
+                        notifi.setText("El vehículo no tiene una Factura pendiente");
+                        datosTikect(placa, idParqueadero);
+                    } else {
+                        datosCarro.setVisibility(View.INVISIBLE);
+                        factura_pendiente.setVisibility(View.VISIBLE);
+                        notifi.setText("El vehículo no está registrado en este parqueadero");
+                        ocultarGif();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ocultarGif();
+                    Toast.makeText(Buscarticket.this, "Error al leer la respuesta.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("Error del servidor: " + errorMessage);
+                ocultarGif();
+                Toast.makeText(Buscarticket.this, "Error de conexión.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
-    public void datosTikect(String placa){
+    public void datosTikect(String placa, String idParqueadero){
         datosCarro.setVisibility(View.INVISIBLE);
         factura_pendiente.setVisibility(View.INVISIBLE);
         cargarGif();
         String urlL = dataConfig.getEndPoint("/tickets/getCosto.php");
 
         datosPots = new HashMap<String, String>();
-        datosPots.put("placa",placa);
+        datosPots.put("placa", placa);
+        if (idParqueadero != null) {
+            datosPots.put("idP", idParqueadero);
+        }
 
 
         conexion.consumoGetParams(urlL, datosPots, new Utils.JsonResponseListener() {
@@ -133,14 +145,13 @@ public class Buscarticket extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 System.out.println("Respuesta del servidor: " + response.toString());
-
-
-
                 try {
-
+                    if (response.optBoolean("error", false)) {
+                        ocultarGif();
+                        Toast.makeText(Buscarticket.this, response.optString("mensaje", "Error del servidor."), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     Boolean statusResponse = response.getBoolean("status");
-
-
                     if(statusResponse){
                         factura_pendiente.setVisibility(View.INVISIBLE);
                         JSONObject objectUser = response.getJSONObject("registros");
@@ -163,19 +174,21 @@ public class Buscarticket extends AppCompatActivity {
                         ocultarGif();
                         datosCarro.setVisibility(View.INVISIBLE);
                         factura_pendiente.setVisibility(View.VISIBLE);
-
+                        TextView notifi = findViewById(R.id.notifi);
+                        notifi.setText("No hay factura pendiente en este parqueadero.");
                     }
-
                 }catch (Exception e){
                     e.printStackTrace();
-                    cargarGif();
+                    ocultarGif();
+                    Toast.makeText(Buscarticket.this, "Error al leer la respuesta.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onError(String errorMessage) {
-                cargarGif();
+                ocultarGif();
                 System.out.println("Error del servidor: " + errorMessage);
+                Toast.makeText(Buscarticket.this, "Error de conexión.", Toast.LENGTH_LONG).show();
             }
         });
 

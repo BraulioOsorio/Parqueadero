@@ -3,16 +3,19 @@
     
     include '../Conexion.php';
 
-    if (!empty($_POST['placa']) and !empty($_POST['propietario']) and !empty($_POST['tipo_vehiculo']) ) {
+    if (!empty($_POST['placa']) && !empty($_POST['tipo_vehiculo']) && !empty($_POST['id_parqueadero'])) {
 
         $placa = $_POST['placa'];
-        $propietario = $_POST['propietario'];
+        $id_parqueadero = (int) $_POST['id_parqueadero'];
+        // Si no se envía propietario, se usa la placa como nombre del propietario
+        $propietario = !empty($_POST['propietario']) ? $_POST['propietario'] : $placa;
         $tipo_vehiculo = $_POST['tipo_vehiculo'];
 
         try {
-            $consulta = $base_de_datos->prepare("INSERT INTO vehiculo_registrados (placa, propietario, tipo) VALUES(:pla, :pro, :tip) ");
+            $consulta = $base_de_datos->prepare("INSERT INTO vehiculo_registrados (placa, id_parqueadero, propietario, tipo) VALUES(:pla, :idP, :pro, :tip) ");
 
             $consulta->bindParam(':pla', $placa);
+            $consulta->bindParam(':idP', $id_parqueadero, PDO::PARAM_INT);
             $consulta->bindParam(':pro', $propietario);
             $consulta->bindParam(':tip', $tipo_vehiculo);
             
